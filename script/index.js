@@ -27,6 +27,34 @@ const loadLevelWord = async (id) => {
   displayLevelWord(words);
 };
 
+const loadWordDetails = async (id) => {
+  const url = `https://openapi.programming-hero.com/api/word/${id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  const wordDetails = data.data;
+
+  displayWordDetails(wordDetails);
+};
+
+const displayWordDetails = (wordDetails) => {
+  const modalContainer = document.getElementById("modal-container");
+  modalContainer.innerHTML = "";
+
+  const modalDiv = document.createElement("div");
+  modalDiv.innerHTML = `
+    <h3>${wordDetails.word}</h3>
+      <p>Meaning</p>
+      <p>${wordDetails.meaning}</p>
+      <p>Example</p>
+      <p>${wordDetails.sentence}</p>
+      <p>সমার্থক শব্দ গুলো</p>
+      <p>${wordDetails.synonyms}</p>
+  `;
+  modalContainer.append(modalDiv);
+  my_modal_5.showModal();
+};
+
 const displayLevelWord = (words) => {
   const wordContainer = document.getElementById("word-container");
   wordContainer.innerHTML = "";
@@ -52,7 +80,7 @@ const displayLevelWord = (words) => {
         <p class="font-medium">Meaning /Pronounciation</p>
         <h2 class="font-semibold font-bangla text-2xl">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation}"</h2>
         <div class="flex justify-between items-center">
-          <button class="btn bg-[#1A91FF]/10 hover:bg-[#1A91FF]/80"><i class="fa-solid fa-circle-info"></i></button>
+          <button onclick="loadWordDetails(${word.id})" class="btn bg-[#1A91FF]/10 hover:bg-[#1A91FF]/80"><i class="fa-solid fa-circle-info"></i></button>
           <button class="btn bg-[#1A91FF]/10 hover:bg-[#1A91FF]/80"><i class="fa-solid fa-volume-high"></i></button>
         </div>
       </div>
