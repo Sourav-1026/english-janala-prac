@@ -118,6 +118,10 @@
       <div id="btn-container" class="flex flex-wrap justify-center gap-2"></div>
     </section>
 
+    <section id="spinner" class="flex justify-center items-center mt-5 hidden">
+      <span class="loading loading-bars loading-xl"></span>
+    </section>
+
     <section id="word-container" class="bg-gray-200 p-10 my-10 w-11/12 mx-auto rounded-md grid grid-cols-1 md:grid-cols-3 gap-10">
       <!-- <div class="bg-white rounded-md shadow-sm py-6 px-2 text-center space-y-5">
         <h2 class="font-bold text-2xl">Eager</h2>
@@ -138,12 +142,14 @@
     <!-- Open the modal using ID.showModal() method -->
     <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
     <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-      <div class="modal-box" id="modal-container"></div>
-      <div class="modal-action">
-        <form method="dialog">
-          <!-- if there is a button in form, it will close the modal -->
-          <button class="btn">Close</button>
-        </form>
+      <div class="modal-box" id="modal-container">
+        <div class="p-3" id="details-container"></div>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn btn-primary">Close</button>
+          </form>
+        </div>
       </div>
     </dialog>
 

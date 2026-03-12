@@ -1,3 +1,13 @@
+const showSpinner = (status) => {
+  if (status == true) {
+    document.getElementById("spinner").classList.remove("hidden");
+    document.getElementById("word-container").classList.add("hidden");
+  } else {
+    document.getElementById("spinner").classList.add("hidden");
+    document.getElementById("word-container").classList.remove("hidden");
+  }
+};
+
 async function loadLevel() {
   const res = await fetch("https://openapi.programming-hero.com/api/levels/all");
   const data = await res.json();
@@ -14,6 +24,7 @@ const removeActive = () => {
 };
 
 const loadLevelWord = async (id) => {
+  showSpinner(true);
   const url = `https://openapi.programming-hero.com/api/level/${id}`;
   const res = await fetch(url);
   const data = await res.json();
@@ -27,6 +38,11 @@ const loadLevelWord = async (id) => {
   displayLevelWord(words);
 };
 
+const showSynonym = (arr) => {
+  const innerSynonym = arr.map((sn) => `<span class = "btn">${sn}</span>`);
+  return innerSynonym.join(" ");
+};
+
 const loadWordDetails = async (id) => {
   const url = `https://openapi.programming-hero.com/api/word/${id}`;
   const res = await fetch(url);
@@ -38,18 +54,26 @@ const loadWordDetails = async (id) => {
 };
 
 const displayWordDetails = (wordDetails) => {
-  const modalContainer = document.getElementById("modal-container");
+  const modalContainer = document.getElementById("details-container");
   modalContainer.innerHTML = "";
 
   const modalDiv = document.createElement("div");
   modalDiv.innerHTML = `
-    <h3>${wordDetails.word}</h3>
-      <p>Meaning</p>
-      <p>${wordDetails.meaning}</p>
-      <p>Example</p>
-      <p>${wordDetails.sentence}</p>
-      <p>সমার্থক শব্দ গুলো</p>
-      <p>${wordDetails.synonyms}</p>
+    <div class="space-y-3 border border-[#EDF7FF] rounded-md p-2">
+    <h3 class="font-bangla text-[36px] font-semibold">${wordDetails.word} (<i class="fa-solid fa-microphone-lines"></i> : ${wordDetails.pronunciation})</h3>
+      <div>
+        <p class="font-semibold text-[24px]">Meaning</p>
+        <p class="font-bangla font-medium">${wordDetails.meaning ? wordDetails.meaning : "অর্থ পাওয়া যায়নি"}</p>
+      </div>
+      <div>
+        <p class="font-semibold text-[24px]">Example</p>
+        <p class="text-[24px]">${wordDetails.sentence}</p>
+      </div>
+      <div>
+        <p class="font-semibold font-bangla text-[24px]">সমার্থক শব্দ গুলো</p>
+        <div>${showSynonym(wordDetails.synonyms) ? showSynonym(wordDetails.synonyms) : "সমার্থক শব্দ পাওয়া যায়নি"}</div>
+      </div>
+    </div>
   `;
   modalContainer.append(modalDiv);
   my_modal_5.showModal();
@@ -69,6 +93,7 @@ const displayLevelWord = (words) => {
         <h1 class="text-[34px] font-medium">নেক্সট Lesson এ যান</h1>
       </div>
     `;
+    showSpinner(false);
     return;
   }
 
@@ -86,8 +111,8 @@ const displayLevelWord = (words) => {
       </div>
     `;
     wordContainer.append(wordDiv);
-    // console.log(word);
   }
+  showSpinner(false);
 };
 
 const displayLessons = (lessons) => {
@@ -102,7 +127,6 @@ const displayLessons = (lessons) => {
     `;
     btnContainer.append(btnDiv);
   }
-  // console.log(lessons);
 };
 
 loadLevel();
