@@ -130,3 +130,18 @@ const displayLessons = (lessons) => {
 };
 
 loadLevel();
+
+document.getElementById("search-btn").addEventListener("click", () => {
+  removeActive();
+  const searchInput = document.getElementById("search-input");
+  const searchText = searchInput.value.trim().toLowerCase();
+  allWord(searchText);
+});
+
+async function allWord(searchText) {
+  const res = await fetch("https://openapi.programming-hero.com/api/words/all");
+  const data = await res.json();
+  const d = data.data;
+  const filterWords = d.filter((d) => d.word.toLowerCase().includes(searchText));
+  displayLevelWord(filterWords);
+}
